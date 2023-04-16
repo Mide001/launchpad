@@ -7,6 +7,7 @@ import IDOFactory from "../../contracts/IDOFactory.json";
 import LockerFactory from "../../contracts/TokenLockerFactory.json";
 // log
 import { fetchData } from "../data/dataActions";
+import { idoABI } from "./ido";
 
 const provider = new WalletConnectProvider({
   rpc: {
@@ -66,10 +67,13 @@ export const connect = () => {
       LockerFactoryNetworkData &&
       networkId == chainId
     ) {
+      //TODO:  edit to multchain format
+      //the contract address is just for hpn
       const IDOFactoryContract = new web3.eth.Contract(
-        IDOFactory.abi,
-        IDOFactoryNetworkData.address
+        idoABI,
+        "0xF6C737cCB518Bb3188ec256B9B2cb801aC7790b6"
       );
+      // IDOFactoryNetworkData.address
       const FeeTokenContract = new web3.eth.Contract(
         FeeToken.abi,
         FeeTokenNetworkData.address
@@ -119,6 +123,6 @@ export const updateAccount = (account) => {
 
 export const checkConnection = (dispatch) => {
   if (web3Modal.cachedProvider) {
-    dispatch(connect())
+    dispatch(connect());
   }
-}
+};
