@@ -1,0 +1,18 @@
+ --clr-neon: hsl(56, 100%, 52%, 1);
+  --clr-bg: hsl(56, 100%, 40%);
+  --primary: #27C498;
+  --secondary: #004e38;
+  --search: #2D2D2D;
+  --card: #232227;
+  --upper-card: #151516;
+  --unfocus: #6F2232;
+  --disable: #6D6E71;
+  --background: #151516;
+  /* --background: #006FB9; */
+  --blue: #1e90ff;
+  --white: #ffffff;
+  --text: #FFFFFF;
+  --text-secondary: #232227;
+  --button: #005987;
+
+  --globalRadius: "20px";
