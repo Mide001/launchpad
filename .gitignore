@@ -27,3 +27,5 @@ yarn-error.log*
 
 .secret
 node_modules
+.env.json
+
