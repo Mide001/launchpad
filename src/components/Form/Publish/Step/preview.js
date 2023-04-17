@@ -15,14 +15,15 @@ const axios = require("axios");
 
 const projectId = process.env.REACT_APP_INFURA_IPFS_KEY;
 const projectSecret = process.env.REACT_APP_INFURA_IPFS_SECRET;
-const auth = "Basic " + Buffer.from(projectId + ":" + projectSecret).toString('base64');
+const auth =
+  "Basic " + Buffer.from(projectId + ":" + projectSecret).toString("base64");
 
 const ipfs = create({
   host: "ipfs.infura.io",
   port: 5001,
   protocol: "https",
   headers: {
-      authorization: auth,
+    authorization: auth,
   },
 });
 
@@ -33,13 +34,11 @@ export default function Preview() {
   const context = useStoreContext();
   const token = context.tokenInformation[0];
   const blockchain = useSelector((state) => state.blockchain);
-  const {
-    FeeTokenApproveToFactory,
-    FeeTokenSymbol,
-  } = useSelector((state) => state.data);
+  const { FeeTokenApproveToFactory, FeeTokenSymbol } = useSelector(
+    (state) => state.data
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const address = context.address[0];
   const icon = context.icon[0];
@@ -51,8 +50,12 @@ export default function Preview() {
   const {
     isAddLiquidityEnabled: [isAddLiquidityEnabled],
   } = context;
-  const listingRate = BigNumber(isAddLiquidityEnabled ? context.listingRate[0] : 0);
-  const lp = BigNumber(isAddLiquidityEnabled ? context.liquidityPercentage[0] : 0);
+  const listingRate = BigNumber(
+    isAddLiquidityEnabled ? context.listingRate[0] : 0
+  );
+  const lp = BigNumber(
+    isAddLiquidityEnabled ? context.liquidityPercentage[0] : 0
+  );
   const requiredToken = tokenRate
     .times(hardCap)
     .plus(hardCap.times(lp).dividedBy(100).times(listingRate))
@@ -80,9 +83,10 @@ export default function Preview() {
   useEffect(() => {
     const fetchIDOFactoryFee = async () => {
       const { IDOFactory } = blockchain;
-      const IDOFactoryFee = await IDOFactory?.methods?.feeAmount().call() || "0";
+      const IDOFactoryFee =
+        (await IDOFactory?.methods?.feeAmount().call()) || "0";
       sesIDOFactoryFee(IDOFactoryFee);
-    }
+    };
 
     fetchIDOFactoryFee();
   }, []);
@@ -136,7 +140,9 @@ export default function Preview() {
 
     const rewardToken = context.address[0];
     const tokenRate = blockchain.web3.utils.toWei(context.tokenRate[0]);
-    const listingRate = blockchain.web3.utils.toWei(isAddLiquidityEnabled ? context.listingRate[0] : "0");
+    const listingRate = blockchain.web3.utils.toWei(
+      isAddLiquidityEnabled ? context.listingRate[0] : "0"
+    );
     const finInfo = [
       tokenRate,
       blockchain.web3.utils.toWei(context.softCap[0]),
@@ -150,12 +156,12 @@ export default function Preview() {
     const start = new Date(context.start[0]);
     const end = new Date(context.end[0]);
     const unlock = new Date(context.unlock[0]);
-    
+
     const timestamps = [
       BigNumber(start.getTime()).div(1000).decimalPlaces(0, 1).toNumber(),
       BigNumber(end.getTime()).div(1000).decimalPlaces(0, 1).toNumber(),
       BigNumber(unlock.getTime()).div(1000).decimalPlaces(0, 1).toNumber(),
-];
+    ];
 
     const dexInfo = [
       chainRouter[process.env.REACT_APP_networkID][0].ROUTER,
@@ -174,6 +180,7 @@ export default function Preview() {
       )
       .send({
         from: blockchain.account,
+        value: 10 * 10 ** 18, //TODO: change the 10 to desired fee value
       })
       .once("error", (err) => {
         setLoading(false);
@@ -183,8 +190,10 @@ export default function Preview() {
         setLoading(false);
         console.log(receipt);
         dispatch(fetchData(blockchain.account));
-        if (receipt?.events?.IDOCreated?.returnValues?.idoPool){
-          navigate(`../locker/${receipt.events.IDOCreated.returnValues.idoPool}`)
+        if (receipt?.events?.IDOCreated?.returnValues?.idoPool) {
+          navigate(
+            `../locker/${receipt.events.IDOCreated.returnValues.idoPool}`
+          );
         }
       });
   };
@@ -192,7 +201,8 @@ export default function Preview() {
   const approveToken = async (_address, amount, tokenContract = null) => {
     setLoading(true);
     const web3 = blockchain.web3;
-    const tokens = tokenContract || await new web3.eth.Contract(ERC20.abi, _address);
+    const tokens =
+      tokenContract || (await new web3.eth.Contract(ERC20.abi, _address));
     const token = await tokens;
     token.methods
       .approve(blockchain.IDOFactory._address, amount)
@@ -210,7 +220,7 @@ export default function Preview() {
         dispatch(fetchData(blockchain.account));
       });
   };
-  console.log(token.tokenAddress)
+  console.log(token.tokenAddress);
 
   return (
     <s.Container flex={1}>
@@ -258,7 +268,7 @@ export default function Preview() {
       <ReadMore>{context.description[0]}</ReadMore>
       <s.TextID>Token address</s.TextID>
       <s.TextDescriptionEllipsis>
-      {token.tokenAddress ? token.tokenAddress : 'No address available'}
+        {token.tokenAddress ? token.tokenAddress : "No address available"}
       </s.TextDescriptionEllipsis>
       <s.TextID>Token name</s.TextID>
       <s.TextDescription>{token.tokenName}</s.TextDescription>
@@ -318,19 +328,19 @@ export default function Preview() {
               " $" +
               process.env.REACT_APP_CURRENCY}
           </s.TextDescription>
-          {
-            isAddLiquidityEnabled && <>
+          {isAddLiquidityEnabled && (
+            <>
               <s.SpacerSmall />
               <s.TextID>Liquidity %</s.TextID>
               <s.TextDescription>
                 {BigNumber(context.liquidityPercentage[0]).toFixed(0) + " %"}
               </s.TextDescription>
             </>
-          }
+          )}
         </s.Container>
       </s.Container>
-      {
-        isAddLiquidityEnabled && <>
+      {isAddLiquidityEnabled && (
+        <>
           <s.TextID>Listing rate</s.TextID>
           <s.TextDescription>
             {"1 $" +
@@ -342,7 +352,7 @@ export default function Preview() {
           </s.TextDescription>
           (TokenRate * HardCap) + ((HardCap * LP%) * ListingRate)
         </>
-      }
+      )}
       <s.TextDescription fullWidth style={{ color: "var(--primary)" }}>
         {"Required " +
           requiredToken
@@ -362,7 +372,7 @@ export default function Preview() {
             disabled={loading}
             onClick={(e) => {
               e.preventDefault();
-              approveToken('', IDOFactoryFee, blockchain.FeeToken);
+              approveToken("", IDOFactoryFee, blockchain.FeeToken);
             }}
           >
             {loading ? ". . ." : `APPROVE ${FeeTokenSymbol}`}
@@ -392,7 +402,11 @@ export default function Preview() {
         )}
       </s.Container>
 
-      {IDOFactoryFee && IDOFactoryFee !== "0" && `Create IDO fee : ${blockchain.web3.utils.fromWei(IDOFactoryFee)} ${FeeTokenSymbol}`}
+      {IDOFactoryFee &&
+        IDOFactoryFee !== "0" &&
+        `Create IDO fee : ${blockchain.web3.utils.fromWei(
+          IDOFactoryFee
+        )} ${FeeTokenSymbol}`}
     </s.Container>
   );
 }
