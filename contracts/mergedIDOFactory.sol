@@ -2131,6 +2131,7 @@ contract IDOFactory is Ownable {
     using SafeERC20 for ERC20Burnable;
     using SafeERC20 for ERC20;
     IWETH private WETH;
+    address[] public IDOaddresses;
 
     // ERC20Burnable public feeToken;
     address public feeWallet;
@@ -2213,6 +2214,8 @@ contract IDOFactory is Ownable {
             _metadataURL
         );
 
+        IDOaddresses.push(address(idoPool));
+
         // uint256 transferAmount = getTokenAmount(_finInfo.hardCap, _finInfo.tokenPrice) + getTokenAmount( (_finInfo.hardCap * _finInfo.lpInterestRate) / 100, _finInfo.listingPrice);
 
         WETH.deposit{value: msg.value}();
@@ -2229,6 +2232,12 @@ contract IDOFactory is Ownable {
             address(_rewardToken),
             _metadataURL
         );
+    }
+
+    function getIdos() public view returns (address[] memory) {
+        address[] memory IDO = new address[](IDOaddresses.length);
+        IDO = IDOaddresses;
+        return IDO;
     }
 
     function getTokenAmount(

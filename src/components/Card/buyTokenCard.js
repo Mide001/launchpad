@@ -18,7 +18,8 @@ const BuyTokenCard = (props) => {
   const { idoAddress } = props;
   const dispatch = useDispatch();
   const currency = " " + process.env.REACT_APP_CURRENCY;
-  const idoInfo = usePoolContext().allPools[idoAddress];
+  const { allPools, setRefresh } = usePoolContext();
+  const idoInfo = allPools[idoAddress];
 
   if (!blockchain.account) {
     return null;
@@ -57,6 +58,7 @@ const BuyTokenCard = (props) => {
           setLoading(false);
           console.log(receipt);
           dispatch(fetchData(blockchain.account));
+          setRefresh((prev) => prev + 1);
         });
     } catch (err) {
       console.log(err);
@@ -85,6 +87,7 @@ const BuyTokenCard = (props) => {
           setLoading(false);
           console.log(receipt);
           dispatch(fetchData(blockchain.account));
+          setRefresh((prev) => prev + 1);
         });
     } catch (err) {
       console.log(err);
@@ -119,8 +122,8 @@ const BuyTokenCard = (props) => {
     }
   };
 
-  const isStarted = parseInt(idoInfo.start) < (parseInt(Date.now() / 1000));
-  const hasEnded = parseInt(idoInfo.end) < (parseInt(Date.now() / 1000));
+  const isStarted = parseInt(idoInfo.start) < parseInt(Date.now() / 1000);
+  const hasEnded = parseInt(idoInfo.end) < parseInt(Date.now() / 1000);
 
   return (
     <s.Card
@@ -131,13 +134,13 @@ const BuyTokenCard = (props) => {
       }}
     >
       <s.TextTitle>BUY TOKEN</s.TextTitle>
-     { /* {hasEnded ? (
+      {/* {hasEnded ? (
         <Badge bg="secondary">Ended</Badge>
       ) : isStarted ? (
         <Badge bg="success">Started</Badge>
       ) : (
         <Badge bg="secondary">Not started</Badge>
-      )} */ }
+      )} */}
       <s.SpacerSmall />
       <PoolCountdown start={idoInfo.start} end={idoInfo.end} />
       <s.Container fd="row" jc="space-between" style={{ marginTop: 10 }}>
@@ -184,9 +187,9 @@ const BuyTokenCard = (props) => {
         <s.Container flex={4}>
           <s.TextID>My invested {process.env.REACT_APP_CURRENCY}</s.TextID>
           <s.TextDescription>
-            {BigNumber(web3.utils.fromWei(idoInfo.userData.totalInvestedETH)).toFormat(
-              2
-            ) + currency}
+            {BigNumber(
+              web3.utils.fromWei(idoInfo.userData.totalInvestedETH)
+            ).toFormat(2) + currency}
           </s.TextDescription>
         </s.Container>
         <s.Container flex={1}>
@@ -207,12 +210,16 @@ const BuyTokenCard = (props) => {
           </s.button>
         </s.Container>
       </s.Container>
-      <s.TextID>Progress</s.TextID> 
+      <s.TextID>Progress</s.TextID>
       <s.SpacerSmall />
       <ProgressBar now={parseInt(idoInfo.progress)} />
       <s.TextDescription>
-      {BigNumber(web3.utils.fromWei(idoInfo.totalInvestedETH)).toFormat(2) + process.env.REACT_APP_CURRENCY} ==> {BigNumber(web3.utils.fromWei(idoInfo.hardCap)).toFormat(2) + process.env.REACT_APP_CURRENCY}
-          </s.TextDescription>
+        {BigNumber(web3.utils.fromWei(idoInfo.totalInvestedETH)).toFormat(2) +
+          process.env.REACT_APP_CURRENCY}{" "}
+        {`==> `}
+        {BigNumber(web3.utils.fromWei(idoInfo.hardCap)).toFormat(2) +
+          process.env.REACT_APP_CURRENCY}
+      </s.TextDescription>
       <s.SpacerMedium />
       <s.Container fd="row" ai="center" jc="space-between">
         <s.Container flex={4} style={{ marginRight: 20 }}>
@@ -242,7 +249,9 @@ const BuyTokenCard = (props) => {
               BigNumber(idoInfo.max).lte(
                 BigNumber(idoInfo.userData.totalInvestedETH)
               ) ||
-              BigNumber(price).lt(BigNumber(idoInfo.min)) ||
+              BigNumber(
+                price + web3.utils.fromWei(idoInfo.userData.totalInvestedETH)
+              ).lt(BigNumber(idoInfo.min)) ||
               BigNumber(price)
                 .dividedBy(BigNumber(idoInfo.price))
                 .times(BigNumber(10 ** idoInfo.tokenDecimals))

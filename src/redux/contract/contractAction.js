@@ -2,6 +2,7 @@
 import Web3 from "web3";
 import IDOFactory from "../../contracts/IDOFactory.json";
 import LockerFactory from "../../contracts/TokenLockerFactory.json";
+import { idoABI } from "../blockchain/ido";
 
 const fetchContractRequest = () => {
   return {
@@ -32,8 +33,8 @@ export const fetchContract = () => {
     try {
       const IDOFactoryNetworkData = await IDOFactory.networks[networkId];
       const IDOFactoryContract = new web3.eth.Contract(
-        IDOFactory.abi,
-        IDOFactoryNetworkData.address
+        idoABI,
+        "0x6a00afa0736E771F13D74f94798C02F31eF303b7"
       );
       const LockerFactoryNetworkData = await LockerFactory.networks[networkId];
       const LockerFactoryContract = new web3.eth.Contract(

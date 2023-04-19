@@ -71,7 +71,7 @@ export const connect = () => {
       //the contract address is just for hpn
       const IDOFactoryContract = new web3.eth.Contract(
         idoABI,
-        "0xF6C737cCB518Bb3188ec256B9B2cb801aC7790b6"
+        "0x6a00afa0736E771F13D74f94798C02F31eF303b7"
       );
       // IDOFactoryNetworkData.address
       const FeeTokenContract = new web3.eth.Contract(

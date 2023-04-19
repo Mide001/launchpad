@@ -98,12 +98,13 @@ export const loadPoolData = async (idoAddress, web3, account) => {
     const idoPool = await new web3.eth.Contract(IDOPool.abi, idoAddress);
     let metadataURL = await idoPool.methods.metadataURL().call();
     let balance = await web3.eth.getBalance(idoAddress);
+    console.log(balance);
     let tokenAddress = await idoPool.methods.rewardToken().call();
     const token = new web3.eth.Contract(ERC20.abi, tokenAddress);
     let metadata = await getTokenURI(metadataURL);
     let owner = await idoPool.methods.owner().call();
 
-    const userData = await loadUserData(idoAddress, web3, account)
+    const userData = await loadUserData(idoAddress, web3, account);
 
     let tokenName = await token.methods.name().call();
     let tokenSymbol = await token.methods.symbol().call();
@@ -113,18 +114,17 @@ export const loadPoolData = async (idoAddress, web3, account) => {
 
     // TODO: make a check for withdraw tokens from the contract if the Soft Cap is not collected
     let unsold = 0;
-    try { unsold = await idoPool.methods.getNotSoldToken().call(); }
-    catch (e) { console.log(e); }
+    try {
+      unsold = await idoPool.methods.getNotSoldToken().call();
+    } catch (e) {
+      console.log(e);
+    }
 
     const timestamps = await idoPool.methods.timestamps().call();
     const dexInfo = await idoPool.methods.dexInfo().call();
     const totalInvestedETH = await idoPool.methods.totalInvestedETH().call();
 
-    const {
-      startTimestamp,
-      endTimestamp,
-      unlockTimestamp,
-    } = timestamps;
+    const { startTimestamp, endTimestamp, unlockTimestamp } = timestamps;
 
     const {
       tokenPrice,
@@ -198,9 +198,10 @@ export const loadUserData = async (idoAddress, web3, account) => {
   try {
     const idoPool = await new web3.eth.Contract(IDOPool.abi, idoAddress);
 
-    const userData = account && account !== ""
-      ? await idoPool.methods.userInfo(account).call()
-      : null;
+    const userData =
+      account && account !== ""
+        ? await idoPool.methods.userInfo(account).call()
+        : null;
 
     return userData;
   } catch (e) {
@@ -248,10 +249,14 @@ export function getTokenURI(uri) {
 
 export function getValidImageUrl(imageUrl) {
   const infuraDedicatedGateway = process.env.REACT_APP_INFURA_DEDICATED_GATEWAY;
-  return infuraDedicatedGateway && imageUrl.match('ipfs.infura.io') ? imageUrl.replace('https://ipfs.infura.io', infuraDedicatedGateway) : imageUrl;
+  return infuraDedicatedGateway && imageUrl.match("ipfs.infura.io")
+    ? imageUrl.replace("https://ipfs.infura.io", infuraDedicatedGateway)
+    : imageUrl;
 }
 
 export function getValidIPFSUrl(url) {
   const infuraDedicatedGateway = process.env.REACT_APP_INFURA_DEDICATED_GATEWAY;
-  return infuraDedicatedGateway && url.match('gateway.pinata.cloud') ? url.replace('https://gateway.pinata.cloud', infuraDedicatedGateway) : url;
+  return infuraDedicatedGateway && url.match("gateway.pinata.cloud")
+    ? url.replace("https://gateway.pinata.cloud", infuraDedicatedGateway)
+    : url;
 }
