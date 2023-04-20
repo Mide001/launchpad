@@ -60,30 +60,30 @@ const Footer = () => {
           <Column fd="row" jc="space-evenly">
             <SocialIcon
               network="email"
-              url="mailto:pedulianakpinggiran@gmail.com?subject=i want a launchpad"
+              url="mailto:manoswapinfo@gmail.com?subject=i want to inquire about Manopad"
               target="_blank"
-              bgColor="#800080"
-              fgColor="#000000"
+              bgColor="#292c6c"
+              fgColor="#ffffff"
             />
             <SocialIcon
               network="telegram"
-              url="https://t.me/plotBSC"
+              url="https://t.me/manoswap/16428"
               target="_blank"
-              bgColor="#800080"
-              fgColor="#000000"
+              bgColor="#292c6c"
+              fgColor="#ffffff"
             />
             <SocialIcon
               network="discord"
-              url="https://discord.gg/"
+              url="https://discord.gg/cfkmmugYZj"
               target="_blank"
-              bgColor="#800080"
-              fgColor="#000000"
+              bgColor="#292c6c"
+              fgColor="#ffffff"
             />
             <SocialIcon
-              url="#"
+              url="https://manoswap.gitbook.io/manoswap/"
               target="_blank"
-              bgColor="#800080"
-              fgColor="#000000"
+              bgColor="#292c6c"
+              fgColor="#ffffff"
             />
           </Column>
         </Row>

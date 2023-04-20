@@ -51,7 +51,7 @@ function App() {
       <s.Container ai="center">
         <s.Container w="85%" style={{ minHeight: 600 }}>
           <s.Container ai="center">
-            <s.TextID style={{ color: "#800080" }}>
+            <s.TextID style={{ color: "#292c6c" }}>
               {blockchain.errorMsg !== "" ? blockchain.errorMsg : null}
             </s.TextID>
           </s.Container>

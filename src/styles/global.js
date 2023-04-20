@@ -125,7 +125,7 @@ export const TextTitle = styled.p`
   font-size: 42px;
   font-weight: 500;
   text-align: center;
-  color: #800080;
+  color: #292c6c;
 `;
 
 export const TextSubTitle = styled.p`
@@ -172,7 +172,7 @@ export const TextBlack = styled.p`
 `;
 
 export const textAvaxcolor = styled.p`
-color: #800080
+color: #292c6c
 
 `;
 
@@ -195,7 +195,7 @@ export const Input = styled.input`
   outline: 0;
   background: transparent;
   color: var(--text);
-  border: #800080 0.125em solid;
+  border: #292c6c 0.125em solid;
   padding: 0.25em 1em;
   border-radius: 0.25em;
   width: 100%;
@@ -293,7 +293,7 @@ export const TextField = styled.div`
   color: var(--black);
   height: 80px;
   border-radius: 20px;
-  border-color: #800080;
+  border-color: #292c6c;
   overflow: hidden;
   text-overflow: hidden;
   overflow-wrap: anywhere;
