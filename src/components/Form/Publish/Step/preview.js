@@ -34,9 +34,6 @@ export default function Preview() {
   const context = useStoreContext();
   const token = context.tokenInformation[0];
   const blockchain = useSelector((state) => state.blockchain);
-  const { FeeTokenApproveToFactory, FeeTokenSymbol } = useSelector(
-    (state) => state.data
-  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -366,18 +363,7 @@ export default function Preview() {
           token.tokenSymbol}
       </s.TextDescription>
       <s.Container ai="center">
-        {BigNumber(FeeTokenApproveToFactory).lt(BigNumber(IDOFactoryFee)) ? (
-          <s.button
-            style={{ marginTop: 20 }}
-            disabled={loading}
-            onClick={(e) => {
-              e.preventDefault();
-              approveToken("", IDOFactoryFee, blockchain.FeeToken);
-            }}
-          >
-            {loading ? ". . ." : `APPROVE ${FeeTokenSymbol}`}
-          </s.button>
-        ) : BigNumber(tokenApprove).lt(BigNumber(requiredToken)) ? (
+        {BigNumber(tokenApprove).lt(BigNumber(requiredToken)) ? (
           <s.button
             style={{ marginTop: 20 }}
             disabled={loading}
@@ -402,11 +388,7 @@ export default function Preview() {
         )}
       </s.Container>
 
-      {IDOFactoryFee &&
-        IDOFactoryFee !== "0" &&
-        `Create IDO fee : ${blockchain.web3.utils.fromWei(
-          IDOFactoryFee
-        )} ${FeeTokenSymbol}`}
+      {IDOFactoryFee && IDOFactoryFee !== "0" && `Create IDO fee : 10 HPN`}
     </s.Container>
   );
 }
