@@ -6,10 +6,10 @@
 :root {
   --clr-neon: hsl(56, 100%, 52%, 1);
   --clr-bg: hsl(56, 100%, 40%);
-  --primary: #800080;
+  --primary: #292c6c;
   --progresscolor: #14A800;
   --secondary: #004e38;
-  --search: #800080;
+  --search: #292c6c;
   --card: #faf9ff;
   --upper-card: #a1a1bf;
   --unfocus: #6F2232;
@@ -18,7 +18,7 @@
   /* --background: #006FB9; */
   --blue: #1e90ff;
   --white: #000000;
-  --text: #800080;
+  --text: #292c6c;
   --text-secondary: #232227;
   --button: #005987;
   --black: black;
